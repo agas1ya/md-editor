@@ -5,7 +5,9 @@
 @tailwind utilities;
 
 @layer base {
-  html, body {
+
+  html,
+  body {
     margin: 0;
     padding: 0;
     height: 100%;
@@ -51,6 +53,8 @@
   line-height: 1.7;
   tab-size: 2;
   caret-color: #171717;
+  white-space: nowrap;
+  overflow-x: auto;
 }
 
 .editor-textarea::placeholder {
@@ -108,4 +112,22 @@
 
 .resize-handle:active {
   background-color: #ebebeb;
+}
+
+/* Header brand — ghost glass pill */
+.header-brand {
+  padding: 5px 14px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.65);
+  letter-spacing: 0.02em;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.header-brand:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.75);
 }
