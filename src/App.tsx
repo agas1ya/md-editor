@@ -135,14 +135,14 @@ function MermaidPreview({ chart }: { chart: string }) {
   );
 }
 
-function IconButton({ 
-  onClick, 
-  title, 
-  children, 
-  active 
-}: { 
-  onClick?: () => void; 
-  title: string; 
+function IconButton({
+  onClick,
+  title,
+  children,
+  active
+}: {
+  onClick?: () => void;
+  title: string;
   children: React.ReactNode;
   active?: boolean;
 }) {
@@ -168,6 +168,8 @@ export default function App() {
   const [editorWidth, setEditorWidth] = useState(38);
   const isDragging = useRef(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(code);
@@ -207,6 +209,12 @@ export default function App() {
     };
   }, []);
 
+  const handleEditorScroll = useCallback(() => {
+    if (textareaRef.current && gutterRef.current) {
+      gutterRef.current.scrollTop = textareaRef.current.scrollTop;
+    }
+  }, []);
+
   const lineCount = code.split('\n').length;
 
   return (
@@ -244,17 +252,22 @@ export default function App() {
           </div>
           <div className="flex flex-1 overflow-hidden">
             {/* Line numbers gutter */}
-            <div className="flex flex-col py-4 pl-4 pr-2 text-right select-none shrink-0 overflow-hidden bg-neutral-50/50 border-r border-neutral-100">
+            <div
+              ref={gutterRef}
+              className="flex flex-col py-4 pl-4 pr-2 text-right select-none shrink-0 overflow-hidden bg-neutral-50/50 border-r border-neutral-100"
+            >
               {Array.from({ length: lineCount }, (_, i) => (
-                <span key={i} className="text-[12px] leading-[1.7] text-neutral-300 font-mono tabular-nums">
+                <span key={i} className="text-[13px] leading-[1.7] text-neutral-300 font-mono tabular-nums">
                   {i + 1}
                 </span>
               ))}
             </div>
             <textarea
+              ref={textareaRef}
               className="editor-textarea w-full h-full py-4 pl-3 pr-4 bg-white resize-none"
               value={code}
               onChange={(e) => setCode(e.target.value)}
+              onScroll={handleEditorScroll}
               spellCheck="false"
               placeholder="Write your mermaid syntax here..."
             />
